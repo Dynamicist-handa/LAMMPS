@@ -1,39 +1,36 @@
-#-----------------------------------------------------#
-#Generate LAMMPS data file using random atom positions#
-#             Rishab Handa, July 30, 2022             #
 import numpy as np
 
-#Number of atoms to create
+# Number of atoms to create
 natoms = 1000
 
-#Size of the system cell in Angstroms
-#assuming a cubic cell starting at the origin
-sys_size = 20.0
+# Size of the system cell in Angstroms
+#	assuming an cubic cell, starting at the origin
+system_size = 20.0
 
-#Generate atom positions
-#Randomness for amorphous glass
-position = []
+# Generate atom positions
+#	Randomness for amorphous glass
+positions = []
 for i in range(natoms):
-    position.append(np.random.rand(3)*sys_size)
+    positions.append(np.random.rand(3) * system_size)
 
-#LAMMPS data file
-with open('random.data','w') as fdata:
-    fdata.write('Random atoms simulation\n\n')
+# Write LAMMPS data file
+with open('random.data', 'w') as fdata:
+    # First line is a comment line
+    fdata.write('Random atoms - written for EnCodeVentor tutorial\n\n')
 
-    #----HEADER----#
-    #Specify the nr. of atoms and atom types
+    # --- Header ---#
+    # Specify number of atoms and atom types
     fdata.write('{} atoms\n'.format(natoms))
     fdata.write('{} atom types\n'.format(1))
-
-    #Specify box dimensions
-    fdata.write('{} {} xlo xhi\n'.format(0.0, sys_size))
-    fdata.write('{} {} ylo yhi\n'.format(0.0, sys_size))
-    fdata.write('{} {} zlo zhi\n'.format(0.0, sys_size))
+    # Specify box dimensions
+    fdata.write('{} {} xlo xhi\n'.format(0.0, system_size))
+    fdata.write('{} {} ylo yhi\n'.format(0.0, system_size))
+    fdata.write('{} {} zlo zhi\n'.format(0.0, system_size))
     fdata.write('\n')
 
-    #Atoms section
+    # Atoms section
     fdata.write('Atoms\n\n')
 
-    #Write each position
-    for pos in enumerate(position):
-        fdata.write('{} 1 {} {} {}'.format(i+1, *pos))
+    # Write each position
+    for i, pos in enumerate(positions):
+        fdata.write('{} 1 {} {} {}\n'.format(i + 1, *pos))
